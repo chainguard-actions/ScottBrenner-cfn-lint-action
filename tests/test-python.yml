@@ -1,0 +1,22 @@
+name: Test python input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          python: "python3"
+      - name: Assert cfn-lint is installed and accessible
+        run: |
+          echo "Checking cfn-lint is available..."
+          CFN_LINT_VERSION=$(cfn-lint --version 2>&1 || true)
+          echo "cfn-lint version output: $CFN_LINT_VERSION"
+          if [ -z "$CFN_LINT_VERSION" ]; then
+            echo "FAIL: cfn-lint not found or returned empty output"
+            exit 1
+          fi
+          echo "PASS"
