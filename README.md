@@ -8,6 +8,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
+| v2.5.1 | [`v2.5.1`](https://github.com/chainguard-actions/ScottBrenner-cfn-lint-action/tree/v2.5.1) | [`83ad1ba`](https://github.com/ScottBrenner/cfn-lint-action/commit/83ad1ba8376272cb219fcde1306ec50a8a480d15) |
 | v2.7.1 | [`v2.7.1`](https://github.com/chainguard-actions/ScottBrenner-cfn-lint-action/tree/v2.7.1) | — |
 
 ## Privacy
