@@ -1,0 +1,1 @@
+# ScottBrenner-cfn-lint-action
