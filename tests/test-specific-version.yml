@@ -1,0 +1,36 @@
+name: Test specific version install
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          version: "==1.22.0"
+      - name: Assert cfn_lint_venv output is set
+        env:
+          VENV: ${{ steps.action.outputs.cfn_lint_venv }}
+        run: |
+          echo "cfn_lint_venv: $VENV"
+          if [ -z "$VENV" ]; then
+            echo "FAIL: cfn_lint_venv output is empty"
+            exit 1
+          fi
+          echo "PASS: cfn_lint_venv is set to '$VENV'"
+      - name: Assert cfn-lint version matches requested
+        env:
+          VENV: ${{ steps.action.outputs.cfn_lint_venv }}
+        run: |
+          CFN_LINT="$VENV/bin/cfn-lint"
+          echo "Checking cfn-lint version..."
+          VERSION_OUTPUT="$("$CFN_LINT" --version 2>&1)"
+          echo "Version output: $VERSION_OUTPUT"
+          if echo "$VERSION_OUTPUT" | grep -q "1.22.0"; then
+            echo "PASS: cfn-lint version 1.22.0 is installed"
+          else
+            echo "FAIL: expected version 1.22.0 but got: $VERSION_OUTPUT"
+            exit 1
+          fi

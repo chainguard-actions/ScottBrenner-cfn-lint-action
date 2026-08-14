@@ -1,0 +1,39 @@
+name: Test custom Python interpreter input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Ensure python3 is available
+        run: |
+          which python3
+          python3 --version
+      - id: action
+        uses: .
+        with:
+          python: "python3"
+      - name: Assert cfn_lint_venv output is set
+        env:
+          VENV: ${{ steps.action.outputs.cfn_lint_venv }}
+        run: |
+          echo "cfn_lint_venv: $VENV"
+          if [ -z "$VENV" ]; then
+            echo "FAIL: cfn_lint_venv output is empty"
+            exit 1
+          fi
+          echo "PASS: cfn_lint_venv is set to '$VENV'"
+      - name: Assert cfn-lint is installed and functional
+        env:
+          VENV: ${{ steps.action.outputs.cfn_lint_venv }}
+        run: |
+          CFN_LINT="$VENV/bin/cfn-lint"
+          echo "Checking cfn-lint binary: $CFN_LINT"
+          if [ ! -f "$CFN_LINT" ]; then
+            echo "FAIL: cfn-lint binary not found at '$CFN_LINT'"
+            exit 1
+          fi
+          VERSION="$("$CFN_LINT" --version 2>&1)"
+          echo "cfn-lint version: $VERSION"
+          echo "PASS: cfn-lint is installed and functional"

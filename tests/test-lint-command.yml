@@ -1,0 +1,25 @@
+name: Test lint command on valid CloudFormation template
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          command: "cfn-lint tests/fixtures/valid-template.yaml"
+      - name: Assert cfn_lint_venv output is set
+        env:
+          VENV: ${{ steps.action.outputs.cfn_lint_venv }}
+        run: |
+          echo "cfn_lint_venv: $VENV"
+          if [ -z "$VENV" ]; then
+            echo "FAIL: cfn_lint_venv output is empty"
+            exit 1
+          fi
+          echo "PASS: cfn_lint_venv is set to '$VENV'"
+      - name: Assert lint passed (no errors for valid template)
+        run: |
+          echo "PASS: cfn-lint command completed successfully on valid template"

@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A simple valid CloudFormation template for testing cfn-lint
+
+Resources:
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "my-test-bucket-${AWS::AccountId}"
+      VersioningConfiguration:
+        Status: Enabled
