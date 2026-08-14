@@ -1,0 +1,21 @@
+name: Test python interpreter input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          python: python3
+      - name: Assert cfn-lint is installed
+        run: |
+          echo "Checking cfn-lint is available after install with python3 interpreter"
+          if ! command -v cfn-lint &> /dev/null; then
+            echo "FAIL: cfn-lint command not found after installation"
+            exit 1
+          fi
+          echo "PASS: cfn-lint is installed"
+          cfn-lint --version

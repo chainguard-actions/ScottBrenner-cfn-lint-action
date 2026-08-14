@@ -1,0 +1,28 @@
+name: Test cfn-lint with lint command
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create a valid CloudFormation template
+        run: |
+          mkdir -p /tmp/cfn-test
+          cat > /tmp/cfn-test/template.yaml << 'EOF'
+          AWSTemplateFormatVersion: "2010-09-09"
+          Description: "A simple test CloudFormation template"
+          Resources:
+            MyBucket:
+              Type: AWS::S3::Bucket
+              Properties:
+                BucketName: !Sub "my-test-bucket-${AWS::AccountId}"
+          EOF
+      - id: action
+        uses: .
+        with:
+          command: "cfn-lint /tmp/cfn-test/template.yaml"
+      - name: Assert cfn-lint command ran successfully
+        run: |
+          echo "cfn-lint command completed successfully"
+          echo "PASS"
