@@ -1,0 +1,37 @@
+{
+    "problemMatcher": [
+        {
+            "owner": "cfn-lint",
+            "pattern": [
+                {
+                    "regexp": "^(([E](\\d{4}))\\s(.+))$",
+                    "message": 1,
+                    "code": 3
+                },
+                {
+                    "regexp": "^(\\S+):(\\d+):(\\d+)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3
+                }
+            ]
+        },
+        {
+            "owner": "cfn-lint-warnings",
+            "severity": "warning",
+            "pattern": [
+                {
+                    "regexp": "^(([WI](\\d{4}))\\s(.+))$",
+                    "message": 1,
+                    "code": 3
+                },
+                {
+                    "regexp": "^(\\S+):(\\d+):(\\d+)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3
+                }
+            ]
+        }
+    ]
+}

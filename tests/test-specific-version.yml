@@ -1,0 +1,31 @@
+name: Test cfn-lint install with specific version
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install cfn-lint with specific version
+        id: action
+        uses: .
+        with:
+          version: "==1.24.0"
+
+      - name: Assert cfn-lint is on PATH and correct version
+        run: |
+          echo "Checking cfn-lint is available..."
+          if ! command -v cfn-lint >/dev/null 2>&1; then
+            echo "FAIL: cfn-lint not found on PATH"
+            exit 1
+          fi
+          echo "PASS: cfn-lint is available"
+          VERSION_OUTPUT="$(cfn-lint --version)"
+          echo "Version output: $VERSION_OUTPUT"
+          if echo "$VERSION_OUTPUT" | grep -q "1.24.0"; then
+            echo "PASS: correct version 1.24.0 installed"
+          else
+            echo "FAIL: expected version 1.24.0 but got: $VERSION_OUTPUT"
+            exit 1
+          fi

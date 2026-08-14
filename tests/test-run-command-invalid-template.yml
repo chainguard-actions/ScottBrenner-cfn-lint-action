@@ -1,0 +1,26 @@
+name: Test cfn-lint run command on invalid template
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install cfn-lint (no command - just install)
+        id: action
+        uses: .
+
+      - name: Assert cfn-lint detects errors in invalid template
+        run: |
+          echo "Checking cfn-lint is available..."
+          if ! command -v cfn-lint >/dev/null 2>&1; then
+            echo "FAIL: cfn-lint not found on PATH"
+            exit 1
+          fi
+          echo "Running cfn-lint on invalid template (expecting failure)..."
+          if cfn-lint tests/fixtures/cfn/invalid-template.yml; then
+            echo "FAIL: cfn-lint should have returned non-zero exit code for invalid template"
+            exit 1
+          fi
+          echo "PASS: cfn-lint correctly detected errors in invalid template"

@@ -1,0 +1,19 @@
+name: Test basic cfn-lint installation
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+      - name: Assert cfn-lint is installed
+        run: |
+          echo "Checking cfn-lint is available..."
+          if ! command -v cfn-lint &>/dev/null; then
+            echo "FAIL: cfn-lint command not found"
+            exit 1
+          fi
+          echo "cfn-lint version: $(cfn-lint --version)"
+          echo "PASS"

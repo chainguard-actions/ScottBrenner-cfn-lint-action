@@ -1,0 +1,22 @@
+name: Test basic cfn-lint install (no inputs)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install cfn-lint with default settings
+        id: action
+        uses: .
+
+      - name: Assert cfn-lint is on PATH
+        run: |
+          echo "Checking cfn-lint is available..."
+          if ! command -v cfn-lint >/dev/null 2>&1; then
+            echo "FAIL: cfn-lint not found on PATH"
+            exit 1
+          fi
+          echo "PASS: cfn-lint is available"
+          cfn-lint --version
