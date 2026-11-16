@@ -4,8 +4,13 @@
   "version": "v2.7.1",
   "commit_sha": "ed184e91f5085a2932501da8314e899e5e0ef5be",
   "url": "https://github.com/ScottBrenner/cfn-lint-action",
-  "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
+  "policy_sha": "374911c4be584df24e6da57af2d990570ef0f859",
   "test_policy_sha": "843adf9e4b8f85d0c08b27b9d0b09dd094b54702",
   "test_agent_version": "2",
-  "harden_agent_version": "2"
+  "harden_agent_version": "2",
+  "dist_artifact": {
+    "gcs_uri": "gs://patch-actions-node-artifacts/dist-artifacts/ScottBrenner/cfn-lint-action/v2.7.1/sha256-a28e9d216e8a33ae932af55a7a670e26d5beef010033ef0325c194fe6181a834.tar.gz",
+    "sha256": "a28e9d216e8a33ae932af55a7a670e26d5beef010033ef0325c194fe6181a834",
+    "size_bytes": 265347
+  }
 }
